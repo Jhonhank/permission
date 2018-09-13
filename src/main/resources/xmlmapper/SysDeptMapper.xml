@@ -347,4 +347,37 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--新增方法-->
+  <select id="getAllDept" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from sys_dept
+  </select>
+
+  <select id="getChildDeptListByLevel" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from sys_dept
+    WHERE level like #{level}||'.%'--level like 0.1%
+  </select>
+  
+  <update id="batchUpdateLevel" parameterType="map">
+    <foreach collection="sysDeptList" item="sysDept" separator=";">
+      update sys_dept
+      set level =#{dept.level}
+      where id=#{dept.id}
+    </foreach>
+  </update>
+
+  <select id="countByNameAndParentId" parameterType="map" resultType="int">
+      SELECT count(1)
+      from sys_dept
+      where name =#{name}
+    <if test="parentId!=null">
+      AND  parent_id=#{parentId}
+    </if>
+    <if test="id!=null">
+        and id!=#{id}
+    </if>
+  </select>
 </mapper>

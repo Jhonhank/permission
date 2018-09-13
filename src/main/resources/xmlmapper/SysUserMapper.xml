@@ -378,4 +378,44 @@
       operate_ip = #{operateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findByKeyWord" parameterType="string" resultMap="BaseResultMap">
+    SELECT  <include refid="Base_Column_List" />
+    FROM sys_user
+    WHERE telephone=#{keyword}
+    OR mail=#{keyword}
+  </select>
+
+  <select id="countByMail" parameterType="map" resultType="int">
+    SELECT  count(1)
+    FROM sys_user
+    where mail=#{mail}
+    <if test="id!=null">
+      AND id!=#{id}
+    </if>
+  </select>
+
+  <select id="countTelephone" parameterType="map" resultType="int">
+    SELECT  count(1)
+    FROM sys_user
+    WHERE telephone=#{telephone}
+    <if test="id!=null">
+      AND id!=#{id}
+    </if>
+  </select>
+
+  <select id="countByDeptId" parameterType="int" resultType="int">
+      SELECT count(1)
+      FROM sys_user
+      where dept_id=#{deptId}
+  </select>
+
+  <select id="getPageByDeptId" parameterType="map" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM sys_user
+    where dept_id=#{deptId}
+    order by username asc
+    limit #{page.offset},#{page.pageSize}
+  </select>
+
 </mapper>

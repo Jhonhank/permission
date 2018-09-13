@@ -1,5 +1,6 @@
 package com.kevin.mapper;
 
+import com.kevin.beans.PageQuery;
 import com.kevin.model.SysUser;
 import com.kevin.model.SysUserExample;
 import java.util.List;
@@ -93,4 +94,14 @@ public interface SysUserMapper {
      * @mbggenerated Tue Sep 11 11:19:45 CST 2018
      */
     int updateByPrimaryKey(SysUser record);
+
+    SysUser findByKeyWord(@Param("keyword") String keyword);
+
+    int countByMail(@Param("mail")String mail,@Param("id") Integer id);
+
+    int countTelephone(@Param("telephone")String telephone,@Param("id")Integer id);
+
+    int countByDeptId(@Param("deptId") int deptId);
+
+    List<SysUser> getPageByDeptId(@Param("deptId") int deptId, @Param("page") PageQuery page);
 }

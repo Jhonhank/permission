@@ -1,6 +1,7 @@
 package com.kevin.common;
 
 import com.kevin.util.JsonMapper;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -39,5 +40,13 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
         long end= System.currentTimeMillis();
 //        Map parameterMap=request.getParameterMap();
         log.info("request finished url:{},param；{}",url, end-start);
+
+        removeThreadLocalIno();
     }
+
+    public void removeThreadLocalIno(){
+        RequestHolder.remove();
+    }
+
+
 }
