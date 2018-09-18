@@ -364,8 +364,8 @@
   <update id="batchUpdateLevel" parameterType="map">
     <foreach collection="sysDeptList" item="sysDept" separator=";">
       update sys_dept
-      set level =#{dept.level}
-      where id=#{dept.id}
+      set level =#{sysDept.level}
+      where id=#{sysDept.id}
     </foreach>
   </update>
 
@@ -379,5 +379,11 @@
     <if test="id!=null">
         and id!=#{id}
     </if>
+  </select>
+
+  <select id="countByParentId" parameterType="int" resultType="int">
+    SELECT count(1)
+    FROM sys_dept
+    WHERE parent_id=#{deptId}
   </select>
 </mapper>

@@ -4,13 +4,13 @@ import com.google.common.base.Preconditions;
 import com.kevin.common.RequestHolder;
 import com.kevin.exception.ParamException;
 import com.kevin.mapper.SysDeptMapper;
+import com.kevin.mapper.SysUserMapper;
 import com.kevin.model.SysDept;
 import com.kevin.param.DeptParam;
 import com.kevin.util.BeanValidator;
 import com.kevin.util.IpUtil;
 import com.kevin.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +23,10 @@ public class SysDeptService {
 
     @Resource
     private SysDeptMapper sysDeptMapper;
+    @Resource
+    private SysUserMapper sysUserMapper;
+    @Resource
+    private SysLogService sysLogService;
 
     public void save(DeptParam param){
         BeanValidator.check(param);
@@ -36,6 +40,7 @@ public class SysDeptService {
         dept.setOperator(RequestHolder.getCurrentUser().getUsername());
         dept.setOperateTime(new Date());
         sysDeptMapper.insertSelective(dept);
+        sysLogService.saveDeptLog(null,dept);
     }
 
     public void update(DeptParam param){
@@ -57,6 +62,7 @@ public class SysDeptService {
         after.setOperateTime(new Date());
 
         updateWithChild(before,after);
+        sysLogService.saveDeptLog(before,after);
     }
 
     @Transactional
@@ -80,7 +86,6 @@ public class SysDeptService {
     }
 
     private boolean checkExist(Integer parentId,String deptName,Integer deptId){
-        //TODO
         return sysDeptMapper.countByNameAndParentId(parentId,deptName,deptId)>0;
     }
 
@@ -90,5 +95,17 @@ public class SysDeptService {
             return null;
         }
         return dept.getLevel();
+    }
+
+    public void delete(int deptId){
+        SysDept dept=sysDeptMapper.selectByPrimaryKey(deptId);
+        Preconditions.checkNotNull(dept,"待删除的部门不存在，无法删除");
+        if (sysDeptMapper.countByParentId(dept.getId())>0){
+            throw new ParamException("当前部门下面有子部门，无法删除");
+        }
+        if(sysUserMapper.countByDeptId(dept.getId())>0){
+            throw new ParamException("当前部门下面有用户，无法删除");
+        }
+        sysDeptMapper.deleteByPrimaryKey(deptId);
     }
 }

@@ -93,4 +93,17 @@ public interface SysRoleUserMapper {
      * @mbggenerated Tue Sep 11 11:19:45 CST 2018
      */
     int updateByPrimaryKey(SysRoleUser record);
+    /*
+    *
+    * 新增函数
+    * */
+    List<Integer> getRoleIdListByUserId(@Param("userId") int userId);
+
+    List<Integer> getUserIdListByRoleId(@Param("roleId") int roleId);
+
+    void deleteByRoleId(@Param("roleId") int roleId);
+
+    void batchInsert(@Param("roleUserList") List<SysRoleUser> roleUserList);
+
+    List<Integer> getUserIdListByRoleIdList(@Param("roleIdList") List<Integer> roleIdList);
 }

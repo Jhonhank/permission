@@ -94,7 +94,9 @@ public interface SysUserMapper {
      * @mbggenerated Tue Sep 11 11:19:45 CST 2018
      */
     int updateByPrimaryKey(SysUser record);
-
+    /*
+    * 新增函数
+    * */
     SysUser findByKeyWord(@Param("keyword") String keyword);
 
     int countByMail(@Param("mail")String mail,@Param("id") Integer id);
@@ -104,4 +106,8 @@ public interface SysUserMapper {
     int countByDeptId(@Param("deptId") int deptId);
 
     List<SysUser> getPageByDeptId(@Param("deptId") int deptId, @Param("page") PageQuery page);
+
+    List<SysUser> getByIdList(@Param("idList") List<Integer> idList);
+
+    List<SysUser> getAll();
 }

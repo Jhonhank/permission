@@ -22,7 +22,6 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req= (HttpServletRequest) servletRequest;
         HttpServletResponse response= (HttpServletResponse) servletResponse;
-        String servlet=req.getServletPath();
 
         SysUser sysUser= (SysUser) req.getSession().getAttribute("user");
         if(sysUser==null){

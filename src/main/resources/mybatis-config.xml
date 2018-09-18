@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-   <!-- <settings>
-        <setting name="safeRowBoundsEnable" value="true"/>
-        <setting name="cacheEnable" value="false"/>
-        <setting name="useGeneratedKeys" value="true"/>
-    </settings>-->
+    <settings>
+        <setting name="safeRowBoundsEnabled" value="true"/>
+        <setting name="cacheEnabled" value="false" />
+        <setting name="useGeneratedKeys" value="true" />
+    </settings>
    <!-- <typeAliases>
 
     </typeAliases>-->

@@ -93,4 +93,10 @@ public interface SysRoleMapper {
      * @mbggenerated Tue Sep 11 11:19:45 CST 2018
      */
     int updateByPrimaryKey(SysRole record);
+
+    List<SysRole> getAll();
+
+    int countByName(@Param("name") String name,@Param("id") Integer id);
+
+    List<SysRole> getByIdList(@Param("idList") List<Integer> idList);
 }

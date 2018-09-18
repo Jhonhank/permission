@@ -1,5 +1,6 @@
 package com.kevin.mapper;
 
+import com.kevin.beans.PageQuery;
 import com.kevin.model.SysAcl;
 import com.kevin.model.SysAclExample;
 import java.util.List;
@@ -93,4 +94,18 @@ public interface SysAclMapper {
      * @mbggenerated Tue Sep 11 11:19:45 CST 2018
      */
     int updateByPrimaryKey(SysAcl record);
+    /*
+    * 新增查询函数
+    * */
+    int countByAclModuleId(@Param("aclModuleId") int aclModuleId);
+
+    List<SysAcl> getPageByAclModuleId(@Param("aclModuleId") int aclModuleId, @Param("page") PageQuery page);
+
+    int countByNameAndAclModuleId(@Param("aclModuleId") int aclModuleId,@Param("name") String name,@Param("id") Integer id);
+
+    List<SysAcl> getAll();
+
+    List<SysAcl> getByIdList(@Param("idList") List<Integer> idList);
+
+    List<SysAcl> getByUrl(@Param("url") String url);
 }

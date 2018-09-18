@@ -10,6 +10,7 @@ import com.kevin.model.SysUser;
 import com.kevin.param.UserParam;
 import com.kevin.util.BeanValidator;
 import com.kevin.util.IpUtil;
+import com.kevin.util.MD5Util;
 import com.kevin.util.PasswordUtil;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class SysUserService {
 
     @Resource
     private SysUserMapper sysUserMapper;
+    @Resource
+    private SysLogService sysLogService;
 
     public void save(UserParam param){
         BeanValidator.check(param);
@@ -32,16 +35,17 @@ public class SysUserService {
         if(checkEmailExist(param.getMail(),param.getId())){
             throw new ParamException("邮箱已注册");
         }
-//        String password= PasswordUtil.randomPassword();
-        String password="123456";
-        String encryptedPqssword="";
+        String password= PasswordUtil.randomPassword();
+        password="123456";
+        String encryptedPqssword= MD5Util.encrypt(password);
         SysUser sysUser=SysUser.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
-                .password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemake()).build();
+                .password(encryptedPqssword).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemake()).build();
         sysUser.setOperator(RequestHolder.getCurrentUser().getUsername());
         sysUser.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysUser.setOperateTime(new Date());
 //        发送email TODO
         sysUserMapper.insertSelective(sysUser);
+        sysLogService.saveUserLog(null,sysUser);
     }
 
     public void update(UserParam param){
@@ -60,6 +64,7 @@ public class SysUserService {
         after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
         sysUserMapper.updateByPrimaryKeySelective(after);
+        sysLogService.saveUserLog(before,after);
     }
 
     public boolean checkEmailExist(String mail,Integer userId){

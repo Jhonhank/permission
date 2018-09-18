@@ -1,5 +1,7 @@
 package com.kevin.mapper;
 
+import com.kevin.beans.PageQuery;
+import com.kevin.dto.SearchLogDto;
 import com.kevin.model.SysLog;
 import com.kevin.model.SysLogExample;
 import com.kevin.model.SysLogWithBLOBs;
@@ -118,4 +120,10 @@ public interface SysLogMapper {
      * @mbggenerated Tue Sep 11 11:19:45 CST 2018
      */
     int updateByPrimaryKey(SysLog record);
+    /*
+    * 新增函数
+    * */
+    int countBySearchDto(@Param("dto") SearchLogDto dto);
+
+    List<SysLogWithBLOBs> getPageListBySearchDto(@Param("dto") SearchLogDto dto, @Param("page") PageQuery page);
 }
